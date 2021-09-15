@@ -13,7 +13,7 @@ library(sf) # for st_crs function
 library(ggplot2)
 
 # Set working directory
-setwd("C:/Users/woute/Desktop/R_biomod2")
+setwd("")
 
 ########################Check collinearity############################
 
@@ -24,7 +24,7 @@ Bsal <- na.exclude(read.delim("Bsal.txt", h = T, sep = "\t", dec = ","))
 Bsal <- Bsal[,1:2]
 # Upload parameters as a stack, extract environmental data;
 # The '$' prevents img.xml etc. from uploading;
-img <- list.files(path = "C:/Users/woute/Desktop/R_biomod2/randomForest/rasters", pattern ='\\.img$', full.names = TRUE) 
+img <- list.files(path = "./rasters", pattern ='\\.img$', full.names = TRUE) 
 # Create the actual stack; 
 env.stack <- stack(img)
 # Extract;
@@ -42,9 +42,6 @@ write.csv(Bsalsample, file="Bsalsample.csv") # export if needed
 # Then check collinearity;
 # Transform parameters with particularly large values;
 Bsalsample$alt <- log10(Bsalsample$alt)
-#Bsalsample$focal_agri5km <- log10(Bsalsample$focal_agri5km)
-#Bsalsample$focal_nature5km <- log10(Bsalsample$focal_nature5km)
-#Bsalsample$focal_urban5km <- log10(Bsalsample$focal_urban5km)
 Bsalsample$majorroaddens <- log10(Bsalsample$majorroaddens)
 Bsalsample$minorroaddens <- log10(Bsalsample$minorroaddens)
 Bsalsample$prep_avg <- log10(Bsalsample$prep_avg)
@@ -74,9 +71,6 @@ altitude <- raster("rasters/alt.img")
 #dist_agricul <- raster("rasters/dist_agricul.img")
 #dist_nature <- raster("rasters/dist_nature.img")
 #dist_urban <- raster("rasters/dist_urban.img")
-#focal_agri <- raster("rasters/focal_agri5km.img")
-#focal_urban <- raster("rasters/focal_urban5km.img")
-#focal_nature <- raster("rasters/focal_nature5km.img")
 #ichalp <- raster("rasters/ichalp.img")
 #lisvul <- raster("rasters/lisvul.img")
 majorroaddens <- raster("rasters/majorroaddens.img")
@@ -115,7 +109,7 @@ env_rf <- stack(altitude, majorroaddens, minorroaddens, PDSI_avg,
 # I first created a 'blocks' shapefile in ArcGIS consisting of a polygon that covers Wallonia-Eifel, and one that covers Essen and other spots east of the Rhine. Attribute table only had one field, 'Blocks'. I combine this below with Bsal occurrence data, which I uploaded from a point shapefile to be sure that the blocks and points had the same coordinate system.
 blocks <- readOGR(dsn = "./Raw data", layer = "blocks")
 blocks <- as(blocks,"SpatialPolygons")
-Bsal.SPDF <- readOGR(dsn= "C:/Users/woute/Desktop/R_biomod2", layer = "Bsal18-2-2020")
+Bsal.SPDF <- readOGR(dsn= "./R_biomod2", layer = "Bsal18-2-2020")
 
 # Check;
 plot(shannon)      
