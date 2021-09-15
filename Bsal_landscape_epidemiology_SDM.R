@@ -29,9 +29,6 @@ img <- list.files(path = "./rasters", pattern ='\\.img$', full.names = TRUE)
 env.stack <- stack(img)
 # Extract;
 Bsalsample <- as.data.frame(extract(env.stack, Bsal))
-# Missing values in two of the CORINE layers are automatically set to 128. Change these to 0;
-#Bsalsample$focal_urban5km[Bsalsample$focal_urban5km=="128"]<-0
-#Bsalsample$focal_agri5km[Bsalsample$focal_agri5km=="128"]<-0
 Bsalsample["x"] <- Bsal$x # Add x
 Bsalsample["y"] <- Bsal$y # Add y
 # First upload Bsal.txt again
@@ -68,9 +65,6 @@ write.csv(Bsalcor, file = "Bsalcor.csv")
 
 # We initially manually set the data type of the host parameters to 'factor', which is the reason why all parameters are uploaded separately below. Including factor parameters however proved to negatively affect the models, so I changed the code to upload everything in standard format.
 altitude <- raster("rasters/alt.img")
-#dist_agricul <- raster("rasters/dist_agricul.img")
-#dist_nature <- raster("rasters/dist_nature.img")
-#dist_urban <- raster("rasters/dist_urban.img")
 #ichalp <- raster("rasters/ichalp.img")
 #lisvul <- raster("rasters/lisvul.img")
 majorroaddens <- raster("rasters/majorroaddens.img")
@@ -2307,7 +2301,7 @@ names(rf_predictions)
 writeRaster(subset(rf_predictions, 2), filename ="Bsal47_rf.img")
 
 # Stack predictions from working directory;
-rf_predictions <- list.files(path = "C:/Users/woute/Desktop/R_biomod2/RF output", pattern ='\\.img$', full.names = TRUE) 
+rf_predictions <- list.files(path = "./R_biomod2/RF output", pattern ='\\.img$', full.names = TRUE) 
 rf.stack <- stack(rf_predictions)
 # Create weighted mean;
 weighted.mean(rf.stack, 
@@ -4387,7 +4381,7 @@ plot(Bsal_glm_projensemble)
 glm_predictions <- get_predictions(Bsal_glm_projensemble)
 writeRaster(subset(glm_predictions, 2), filename ="Bsal47_glm.img")
 
-glm_predictions <- list.files(path = "C:/Users/woute/Desktop/R_biomod2/GLM output", pattern ='\\.img$', full.names = TRUE) 
+glm_predictions <- list.files(path = ".R_biomod2/GLM output", pattern ='\\.img$', full.names = TRUE) 
 glm.stack <- stack(glm_predictions)
 weighted.mean(glm.stack, 
               Bsal_eval_glm$Testing.data.GLM.RUN1.AllData, 
